@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:lucky_draw_admin/firebase_options.dart';
 import 'package:lucky_draw_admin/admin_auth_gate.dart'; // Will create this file
+import 'package:flutter_config/flutter_config.dart'; // Import flutter_config
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables(); // Load environment variables
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: FirebaseOptions(
+      apiKey: FlutterConfig.get('FIREBASE_API_KEY'),
+      appId: FlutterConfig.get('FIREBASE_APP_ID'),
+      projectId: FlutterConfig.get('FIREBASE_PROJECT_ID'),
+      messagingSenderId: FlutterConfig.get('FIREBASE_MESSAGING_SENDER_ID'),
+      // Add other fields from google-services.json as needed
+    ),
   );
   runApp(const MyApp());
 }

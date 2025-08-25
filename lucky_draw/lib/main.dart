@@ -2,17 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:lucky_draw/auth_gate.dart';
+import 'package:flutter_config/flutter_config.dart'; // Import flutter_config
 
 // This function will be called when a background message is received
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  // Ensure FlutterConfig is initialized for background messages as well
+  await FlutterConfig.loadEnvVariables();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: FlutterConfig.get('FIREBASE_API_KEY'),
+      appId: FlutterConfig.get('FIREBASE_APP_ID'),
+      projectId: FlutterConfig.get('FIREBASE_PROJECT_ID'),
+      // Add other fields from google-services.json as needed
+      // messagingSenderId: FlutterConfig.get('FIREBASE_MESSAGING_SENDER_ID'),
+      // storageBucket: FlutterConfig.get('FIREBASE_STORAGE_BUCKET'),
+    ),
+  );
   print('Handling a background message: ${message.messageId}');
   // You can add more logic here to handle the notification, e.g., show a local notification
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await FlutterConfig.loadEnvVariables(); // Load environment variables
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: FlutterConfig.get('FIREBASE_API_KEY'),
+      appId: FlutterConfig.get('FIREBASE_APP_ID'),
+      projectId: FlutterConfig.get('FIREBASE_PROJECT_ID'),
+      // Add other fields from google-services.json as needed
+      // messagingSenderId: FlutterConfig.get('FIREBASE_MESSAGING_SENDER_ID'),
+      // storageBucket: FlutterConfig.get('FIREBASE_STORAGE_BUCKET'),
+    ),
+  );
 
   // Request permission for notifications
   FirebaseMessaging messaging = FirebaseMessaging.instance;

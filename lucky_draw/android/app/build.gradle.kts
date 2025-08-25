@@ -29,6 +29,15 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Firebase credentials from environment variables
+        buildConfigField "String", "FIREBASE_PROJECT_ID", "\"${System.getenv("FIREBASE_PROJECT_ID")}\""
+        buildConfigField "String", "FIREBASE_API_KEY", "\"${System.getenv("FIREBASE_API_KEY")}\""
+        buildConfigField "String", "FIREBASE_APP_ID", "\"${System.getenv("FIREBASE_APP_ID")}\""
+        // Add other necessary fields from google-services.json as needed, e.g.:
+        // buildConfigField "String", "FIREBASE_STORAGE_BUCKET", "\"${System.getenv("FIREBASE_STORAGE_BUCKET")}\""
+        // buildConfigField "String", "FIREBASE_MESSAGING_SENDER_ID", "\"${System.getenv("FIREBASE_MESSAGING_SENDER_ID")}\""
+        // buildConfigField "String", "FIREBASE_WEB_CLIENT_ID", "\"${System.getenv("FIREBASE_WEB_CLIENT_ID")}\""
     }
 
     buildTypes {
